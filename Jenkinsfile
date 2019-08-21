@@ -30,13 +30,26 @@ pipeline {
               .collect { meta -> "\t${meta.key} -> ${meta.value}"}
               .join("\n")
           echo "Build metadata:\n${metadataStr}"
+
+          def img_ns = buildMetadata['namespace']
+          def img_name = buildMetadata['name']
+          def img_tag = buildMetadata['image_tag']
         }
       }
     }
 
     stage("Run image tests") {
       steps {
-        echo "This would be a stage which executes the actual image tests. Intentionally empty in this sample."
+        echo "---------------------- TEST START ---------------------"
+        def result_flag = 0
+        sh 'cd containers-ansible/containers-ansible'
+        try {
+          sh 'ansible-playbook rsyslog.yml -e image_version=/${img_ns}/${img_name}:${img_tag}'
+        }
+        catch (exc) {
+          result_flag = 1
+        }
+        
       }
       post {
         always {
@@ -48,9 +61,11 @@ pipeline {
             def namespace = "atomic-rsyslog-container-test"
             def type = "default"
             def testName = "fulltest"
-            // Status can be 'PASSED', 'FAILED', 'INFO' (soft pass) or 'NEEDS_INSPECTION' (soft fail).
-            // See Factory 2.0 CI UMB messages for more info - https://docs.google.com/document/d/16L5odC-B4L6iwb9dp8Ry0Xk5Sc49h9KvTHrG86fdfQM/edit#heading=h.ixgzbhywliel
-            def status = "PASSED"
+            if (result_flag == 0) {
+              def status = "PASSED"
+            } else {
+              def status = "FAILED"
+            }
 
             def brewTaskID = buildMetadata['id']
             def brewNvr = buildMetadata['nvr']
