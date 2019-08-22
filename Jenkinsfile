@@ -34,6 +34,7 @@ pipeline {
           def img_ns = buildMetadata['namespace']
           def img_name = buildMetadata['name']
           def img_tag = buildMetadata['image_tag']
+          def img_fn = buildMetadata['full_name']
         }
       }
     }
@@ -43,13 +44,13 @@ pipeline {
         echo "---------------------- TEST START ---------------------"
         def result_flag = 0
         sh 'cd containers-ansible/containers-ansible'
+        sh 'docker pull ${img_fn}'
         try {
-          sh 'ansible-playbook rsyslog.yml -e image_version=/${img_ns}/${img_name}:${img_tag}'
+          sh 'ansible-playbook rsyslog.yml -e image_version=/rhel7/rsyslog'
         }
         catch (exc) {
           result_flag = 1
         }
-        
       }
       post {
         always {
