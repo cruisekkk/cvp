@@ -41,15 +41,17 @@ pipeline {
 
     stage("Run image tests") {
       steps {
-        echo "---------------------- TEST START ---------------------"
-        def result_flag = 0
-        sh 'cd containers-ansible/containers-ansible'
-        sh 'docker pull ${img_fn}'
-        try {
-          sh 'ansible-playbook rsyslog.yml -e image_version=/rhel7/rsyslog'
-        }
-        catch (exc) {
-          result_flag = 1
+        script {
+          echo "---------------------- TEST START ---------------------"
+          def result_flag = 0
+          sh 'cd containers-ansible/containers-ansible'
+          sh 'docker pull ${img_fn}'
+          try {
+            sh 'ansible-playbook rsyslog.yml -e image_version=/rhel7/rsyslog'
+          }
+          catch (exc) {
+            result_flag = 1
+          }
         }
       }
       post {
