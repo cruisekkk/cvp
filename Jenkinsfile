@@ -44,7 +44,7 @@ pipeline {
         script {
           echo "---------------------- TEST START ---------------------"
           def result_flag = 0
-          sh 'cd containers-ansible/containers-ansible'
+          sh 'cd /home/cloud-user/containers-ansible/containers-ansible'
           sh 'docker pull ${img_fn}'
           try {
             sh 'ansible-playbook rsyslog.yml -e image_version=/rhel7/rsyslog'
