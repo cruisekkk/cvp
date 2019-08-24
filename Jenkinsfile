@@ -30,11 +30,6 @@ pipeline {
               .collect { meta -> "\t${meta.key} -> ${meta.value}"}
               .join("\n")
           echo "Build metadata:\n${metadataStr}"
-
-          def img_ns = buildMetadata['namespace']
-          def img_name = buildMetadata['name']
-          def img_tag = buildMetadata['image_tag']
-          def img_fn = buildMetadata['full_name']
         }
       }
     }
@@ -44,6 +39,12 @@ pipeline {
         script {
           echo "---------------------- TEST START ---------------------"
           def result_flag = 0
+
+          def dmg_ns = buildMetadata['namespace']
+          def img_name = buildMetadata['name']
+          def img_tag = buildMetadata['image_tag']
+          def img_fn = buildMetadata['full_name']
+
           sh 'cd /home/cloud-user/containers-ansible/containers-ansible'
           sh 'docker pull ${img_fn}'
           try {
