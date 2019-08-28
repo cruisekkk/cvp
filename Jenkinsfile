@@ -45,10 +45,10 @@ pipeline {
           def img_tag = buildMetadata['image_tag']
           def img_fn = buildMetadata['full_name']
 
-          sh 'cd /home/cloud-user/containers-ansible/containers-ansible'
-          sh 'docker pull ${img_fn}'
+          sh "cd /home/cloud-user/containers-ansible/containers-ansible"
+          sh "docker pull ${img_fn}"
           try {
-            sh 'ansible-playbook rsyslog.yml -e image_version=/rhel7/rsyslog'
+            sh "ansible-playbook rsyslog.yml -e image_version=/rhel7/rsyslog"
           }
           catch (exc) {
             result_flag = 1
