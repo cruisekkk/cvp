@@ -46,7 +46,7 @@ pipeline {
           def img_fn = buildMetadata['full_name']
 
           sh "cd /home/cloud-user/containers-ansible/containers-ansible"
-          sh "docker pull ${img_fn}"
+          sh "sudo docker pull ${img_fn}"
           try {
             sh "ansible-playbook rsyslog.yml -e image_version=/rhel7/rsyslog"
           }
