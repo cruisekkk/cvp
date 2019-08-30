@@ -4,6 +4,8 @@
 
 def ciMessage = params.CI_MESSAGE // UMB message which triggered the build
 def buildMetadata = [:]           // image build metadata; parsed from the UMB message
+def result_flag = 0               // flag for testing result, used for the post sending UMB
+def status = ''                   // testing result for post sending UMB
 
 
 // Load the contra-int-lib library which will be used for UMB message parsing
@@ -38,7 +40,6 @@ pipeline {
       steps {
         script {
           echo "---------------------- TEST START ---------------------"
-          def result_flag = 0
 
           def dmg_ns = buildMetadata['namespace']
           def img_name = buildMetadata['name']
@@ -46,10 +47,10 @@ pipeline {
           def img_fn = buildMetadata['full_name']
 
           try {
-            sh '''
+            sh """
                cd /home/cloud-user/containers-ansible/containers-ansible
-               ansible-playbook rsyslog.yml -e image_version=/rhel7/rsyslog
-            '''
+               ansible-playbook rsyslog.yml -e image_version=/${dmg_ns}/${img_name}:${img_tag}
+            """
           }
           catch (exc) {
             result_flag = 1
@@ -67,9 +68,9 @@ pipeline {
             def type = "default"
             def testName = "fulltest"
             if (result_flag == 0) {
-              def status = "PASSED"
+              status = "PASSED"
             } else {
-              def status = "FAILED"
+              status = "FAILED"
             }
 
             def brewTaskID = buildMetadata['id']
