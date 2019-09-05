@@ -1,5 +1,6 @@
 /**
- * This file showing the interaction with Unified Message Bus (UMB).
+ * This file is to implement the CVP testing of rhel7/rsyslog in the "extras" way.
+ * Listening build UMB messages -> trigger the test job -> running test -> post test result via UMB message.
  */
 
 def ciMessage = params.CI_MESSAGE // UMB message which triggered the build
