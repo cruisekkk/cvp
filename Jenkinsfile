@@ -67,7 +67,7 @@ pipeline {
             // the following three values need to match the configuration in gating.yaml
             def namespace = "atomic-rsyslog-container-test"
             def type = "default"
-            def testName = "fulltest"
+            def testName = "cvetest"
             if (result_flag == 0) {
               status = "PASSED"
             } else {
@@ -85,7 +85,7 @@ pipeline {
                 "ci": {
                     "url": "https://jenkins-cvp-ci.cloud.paas.upshift.redhat.com/",
                     "team": "atomic-qe",
-                    "email": "atomic-qe@redhat.com",
+                    "email": "weshen@redhat.com",
                     "name": "Edward Shen"
                 },
                 "run": {
