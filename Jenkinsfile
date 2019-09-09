@@ -65,7 +65,7 @@ pipeline {
             def provider = "Red Hat UMB" // change the provider to "Red Hat UMB Stage" for development purposes
 
             // the following three values need to match the configuration in gating.yaml
-            def namespace = "atomic-rsyslog-container-test"
+            def namespace = "atomic-rsyslog-rhel7-container-test"
             def type = "default"
             def testName = "cvetest"
             if (result_flag == 0) {
