@@ -18,7 +18,7 @@ pipeline {
   agent {
     // Ideally, jobs should _not_ run directly on a Jenkins master, but rather on a different agent (slave)
     // This sample is simple enough though and running on master requires less configuration.
-    label("rhel7-main")
+    label("rhel8-main")
   }
 
   stages {
