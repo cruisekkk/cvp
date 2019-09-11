@@ -42,16 +42,13 @@ pipeline {
         script {
           echo "---------------------- TEST START ---------------------"
 
-          def dmg_ns = buildMetadata['namespace']
-          def img_name = buildMetadata['name']
-          def img_tag = buildMetadata['image_tag']
           def img_fn = buildMetadata['full_name']
 
           // For ubi and rhel base images, no namespace needed to use.
           try {
             sh """
                cd /home/cloud-user/containers-ansible/containers-ansible
-               ansible-playbook rhel_init.yml -e image_version=/${img_name}:${img_tag}
+               ansible-playbook rhel_init.yml -e image_fullname=${img_fn}
             """
           }
           catch (exc) {
