@@ -42,15 +42,12 @@ pipeline {
         script {
           echo "---------------------- TEST START ---------------------"
 
-          def dmg_ns = buildMetadata['namespace']
-          def img_name = buildMetadata['name']
-          def img_tag = buildMetadata['image_tag']
           def img_fn = buildMetadata['full_name']
 
           try {
             sh """
                cd /home/cloud-user/containers-ansible/containers-ansible
-               ansible-playbook rsyslog.yml -e image_version=/${dmg_ns}/${img_name}:${img_tag}
+               ansible-playbook rsyslog.yml -e image_fullname=${img_fn}
             """
           }
           catch (exc) {
